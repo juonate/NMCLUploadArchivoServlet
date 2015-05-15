@@ -7,7 +7,6 @@
 </head>
 <body>
 	<form name="form1" id="form1" action="uploadFile" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="hiddenfield1" value="ok">
 	Files to upload:
 	<br/>
 	<input type="file" size="50" name="file1">

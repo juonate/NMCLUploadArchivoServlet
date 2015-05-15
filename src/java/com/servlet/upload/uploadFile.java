@@ -56,9 +56,10 @@ public class uploadFile extends HttpServlet {
                 return;
             }
             while (it.hasNext()) {
+                out.println(it.toString());
                 FileItem fileItem = it.next();
                 File file = new File("C:\\destino\\" + fileItem.getName());
-                out.println(file.getPath());
+                out.println(file.getPath()+"<br/>");
 
                 fileItem.write(file);
 
