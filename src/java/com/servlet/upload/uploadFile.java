@@ -9,6 +9,7 @@ package com.servlet.upload;
  * @author Juan
  */
 import com.google.gson.Gson;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +39,9 @@ public class uploadFile extends HttpServlet {
     private static final long serialVersionUID = 1L;
     File file = null;
     String fechaText;
+    String fechaTextXml;
     SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+    SimpleDateFormat formatoFechaXml = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     SimpleDateFormat formatoFechaNombre = new SimpleDateFormat("yyyyMMddHHmmss");
     String uploadDir = "C:\\destino\\";
 
@@ -73,11 +77,17 @@ public class uploadFile extends HttpServlet {
 //                out.println(it.toString());
                 FileItem fileItem = it.next();
                 String rutaArchivo = guardarArchivo();
+                
                 file = new File(rutaArchivo + "\\" + fechaNombre + fileItem.getName());
-
                 fileItem.write(file);
+                file.setReadable(true);
+                file.setWritable(true);
+                file.setExecutable(true);
+//                BufferedImage bimg = ImageIO.read(file);
+//                ImageIO.write(bimg, "png", new File(rutaArchivo + "\\" + fechaNombre + fileItem.getName()+".png"));
+
                 if (file.canRead()) {
-                    imprimir("Se ha subido correctamente el archivo: " + file.getPath());
+                    imprimir("Se ha subido correctamente el archivo: " + file.getAbsolutePath());
                 }
 
             }
@@ -91,7 +101,7 @@ public class uploadFile extends HttpServlet {
         
         out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 +"<parametros>"
-                + "<fechaText>"+fechaText+"</fechaText>"
+                + "<fechaText>"+fechaTextXml+"</fechaText>"
                 + "<rutaArchivo>"+file.getAbsolutePath()+"</rutaArchivo>"
                 +"</parametros>");
         
@@ -100,12 +110,16 @@ public class uploadFile extends HttpServlet {
     public void crearDirectorio(String rutaDirectorio) {
         File directorio = new File(rutaDirectorio);
         directorio.mkdir();
+        directorio.setReadable(true);
+        directorio.setExecutable(true);
+        directorio.setWritable(true);
     }
 
     public String guardarArchivo() {
         Date fecha =  new Date();
         Calendar fechaActual = Calendar.getInstance();
         fechaText = formatoFecha.format(fecha);
+        fechaTextXml = formatoFechaXml.format(fecha);
         String anio = Integer.toString(fechaActual.get(Calendar.YEAR));
 
         File carpetaAnual = new File(uploadDir + anio);
