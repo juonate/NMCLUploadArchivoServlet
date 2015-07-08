@@ -80,10 +80,10 @@ public class uploadFile extends HttpServlet {
                 
                 file = new File(rutaArchivo + "\\" + fechaNombre + fileItem.getName());
                 fileItem.write(file);
-                file.setReadable(true);
-                file.setWritable(true);
-                file.setExecutable(true);
-//                BufferedImage bimg = ImageIO.read(file);
+                file.setReadable(true, false);
+                file.setWritable(true, false);
+                file.setExecutable(true, false);
+//                BufferedImage bimg = isMultipartContentImageIO.read(file);
 //                ImageIO.write(bimg, "png", new File(rutaArchivo + "\\" + fechaNombre + fileItem.getName()+".png"));
 
                 if (file.canRead()) {
@@ -123,8 +123,14 @@ public class uploadFile extends HttpServlet {
         String anio = Integer.toString(fechaActual.get(Calendar.YEAR));
 
         File carpetaAnual = new File(uploadDir + anio);
+        carpetaAnual.setExecutable(true, false);
+        carpetaAnual.setReadable(true, false);
+        carpetaAnual.setWritable(true, false);
         String rutaCarpetaAnual = carpetaAnual.getPath();
         File carpetaDiaria = new File(uploadDir + anio + "\\" + fechaText);
+        carpetaDiaria.setExecutable(true, false);
+        carpetaDiaria.setReadable(true, false);
+        carpetaDiaria.setWritable(true, false);
         String rutaCarpetaDiaria = carpetaDiaria.getPath();
 
         if (carpetaAnual.exists()) {
